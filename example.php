@@ -1,24 +1,28 @@
-<?php
+﻿<?php
 
 require 'CloudMailRu.php';
 
-$cloud = new CloudMailRu('user','pass');
+function PublishFile($cloud,$local_file,$remote_file) {
+	$url = $cloud->loadFileAhdPublish($local_file, $remote_file);
+	return ($url !== "error")?"ссылка для скачивания: $url":"загрузка в облако не удалась";
+}
 
+function DownloadFile ($cloud,$remote_file,$local_file) {
+	$result = $cloud->getFile($remote_file);
+	if ($result) {
+		file_put_contents($local_file,$result);
+		return "Сохранено в $local_file";
+	} else {
+		return "Скачивание не удалось";
+	}
+}
+
+$cloud = new CloudMailRu('user','password');
 if ($cloud->login()) {
-    
-    $file = dirname(__FILE__).'/test_file.txt';
-    $file_cloud = '/dir/test_file.txt';
-    
-    $url = $cloud->loadFileAhdPublish($file, $file_cloud);
-    
-    if ($url !== "error") {
-        echo 'ссылка для скачивания - '.$url;
-    } else {
-        echo 'загрузка в облако не удалась';
-    }
-    
+	echo PublishFile ($cloud,dirname(__FILE__).'/test_file.txt','/dir/test_file.txt');
+	echo DownloadFile ($cloud,'/dir/test_file.txt',dirname(__FILE__).'/test_file_from_cloud.txt');
 } else {
-    echo 'не прошли авторизацию';
+	echo 'не прошли авторизацию';
 }
 
 unset($cloud);
