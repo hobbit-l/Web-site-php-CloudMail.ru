@@ -10,6 +10,7 @@ class CloudMailRu {
 	private
 		$user,
 		$pass,
+		$domain,
 		$dir,
 		$token,
 		$x_page_id,
@@ -18,9 +19,10 @@ class CloudMailRu {
 		$ch,
 		$cookie;
 
-	function __construct($user, $pass) {
+	function __construct($user, $pass, $domain='mail.ru') {
 		$this->user = $user;
 		$this->pass = $pass;
+		$this->domain = $domain;
 		$this->dir = dirname(__FILE__);
 		$this->token = '';
 		$this->x_page_id = '';
@@ -42,7 +44,7 @@ class CloudMailRu {
 		$post_data = [
 			"page" => "https://cloud.mail.ru/?from=promo",
 			"FailPage" => "",
-			"Domain" => "mail.ru",
+			"Domain" => $this->domain,
 			"Login" => $this->user,
 			"Password" => $this->pass,
 			"new_auth_form" => "1"
@@ -94,8 +96,8 @@ class CloudMailRu {
 			.'&api=2'
 			.'&build='.$this->build
 			.'&x-page-id='.$this->x_page_id
-			.'&email='.$this->user.'%40mail.ru'
-			.'&x-email='.$this->user.'%40mail.ru'
+			.'&email='.$this->user.'%40'.$this->domain
+			.'&x-email='.$this->user.'%40'.$this->domain
 			.'&token='.$this->token.'&_=1433249148810';
 		$this->_curl_init($url);
 		$result = $this->_curl_exec();
@@ -112,9 +114,9 @@ class CloudMailRu {
 		$post_data = ''
 			.'api=2'
 			.'&build='.$this->build
-			.'&email='.$this->user.'%40mail.ru'
+			.'&email='.$this->user.'%40'.$this->domain
 			.'&token='.$this->token
-			.'&x-email='.$this->user.'%40mail.ru'
+			.'&x-email='.$this->user.'%40'.$this->domain
 			.'&x-page-id='.$this->x_page_id;
 		$this->_curl_init($url);
 		$this->_curl_post($post_data);
@@ -134,10 +136,10 @@ class CloudMailRu {
 			.'api=2'
 			.'&build='.$this->build
 			.'&conflict=rename'
-			.'&email='.$this->user.'%40mail.ru'
+			.'&email='.$this->user.'%40'.$this->domain
 			.'&home='.$dir
 			.'&token='.$this->token
-			.'&x-email='.$this->user.'%40mail.ru'
+			.'&x-email='.$this->user.'%40'.$this->domain
 			.'&x-page-id='.$this->x_page_id;
 
 		$this->_curl_init($url);
@@ -192,7 +194,7 @@ class CloudMailRu {
 
 		$url = $this->upload_url
 			.'?cloud_domain=1'
-			.'&x-email='.$this->user.'%40mail.ru'
+			.'&x-email='.$this->user.'%40'.$this->domain
 			.'&fileapi'.$_time;
 
 		$post_data = array("file" => "@".$file_name);
@@ -221,12 +223,12 @@ class CloudMailRu {
 			.'api=2'
 			.'&build='.$this->build
 			.'&conflict=rename'
-			.'&email='.$this->user.'%40mail.ru'
+			.'&email='.$this->user.'%40'.$this->domain
 			.'&home='.$dir_cloud
 			.'&hash='.$arr[0]
 			.'&size='.$arr[1]
 			.'&token='.$this->token
-			.'&x-email='.$this->user.'%40mail.ru'
+			.'&x-email='.$this->user.'%40'.$this->domain
 			.'&x-page-id='.$this->x_page_id;
 
 		$this->_curl_init($url);
@@ -246,10 +248,10 @@ class CloudMailRu {
 		$post_data = ''
 			.'api=2'
 			.'&build='.$this->build
-			.'&email='.$this->user.'%40mail.ru'
+			.'&email='.$this->user.'%40'.$this->domain
 			.'&home='.$dir_cloud
 			.'&token='.$this->token
-			.'&x-email='.$this->user.'%40mail.ru'
+			.'&x-email='.$this->user.'%40'.$this->domain
 			.'&x-page-id='.$this->x_page_id;
 
 		$this->_curl_init($url);
@@ -269,10 +271,10 @@ class CloudMailRu {
 		$post_data = ''
 				. 'api=2'
 				. '&build='.$this->build
-				. '&email='.$this->user.'%40mail.ru'
+				. '&email='.$this->user.'%40'.$this->domain
 				. '&home='.$file_path
 				. '&token='.$this->token
-				. '&x-email='.$this->user.'%40mail.ru'
+				. '&x-email='.$this->user.'%40'.$this->domain
 				. '&x-page-id='.$this->x_page_id;
 
 		$this->_curl_init($url);
