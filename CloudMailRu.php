@@ -193,11 +193,11 @@ class CloudMailRu {
 		$_time = time().'0246';
 
 		$url = $this->upload_url
-			.'?cloud_domain=1'
+			.'?cloud_domain=2'
 			.'&x-email='.$this->user.'%40'.$this->domain
 			.'&fileapi'.$_time;
 
-		$post_data = array("file" => "@".$file_name);
+		$post_data = ["file" => curl_file_create($file_name)];
 
 		$this->_curl_init($url);
 		$this->_curl_post($post_data);
@@ -311,9 +311,11 @@ class CloudMailRu {
 		curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER, true);
 		curl_setopt($this->ch, CURLOPT_COOKIEFILE,$this->cookie);
 		curl_setopt($this->ch, CURLOPT_COOKIEJAR, $this->cookie);
+		curl_setopt($this->ch, CURLOPT_FOLLOWLOCATION, true);
 	}
 
 	private function _curl_post($post_data) {
+		curl_setopt($this->ch, CURLOPT_HTTPHEADER,array('Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.57 Safari/537.17','Referer: https://cloud.mail.ru/home/','Content-Type: multipart/form-data'));
 		curl_setopt($this->ch, CURLOPT_POST, true);
 		curl_setopt($this->ch, CURLOPT_POSTFIELDS, $post_data);
 	}
