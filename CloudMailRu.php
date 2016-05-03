@@ -264,6 +264,30 @@ class CloudMailRu {
 		}
 	}
 
+	function renameFile_on_cloud($oldName,$newName) {
+
+		$url = 'https://cloud.mail.ru/api/v2/file/rename';
+
+		$post_data = ''
+			.'api=2'
+			.'&build='.$this->build
+			.'&email='.$this->user.'%40'.$this->domain
+			.'&home='.$oldName
+			.'&name='.$newName
+			.'&token='.$this->token
+			.'&x-email='.$this->user.'%40'.$this->domain
+			.'&x-page-id='.$this->x_page_id;
+
+		$this->_curl_init($url);
+		$this->_curl_post($post_data);
+		$result = $this->_curl_exec();
+		if ($result['success']) {
+			return $result['result'];
+		} else {
+			return false;
+		}
+	}
+
 	function publishFile($file_path) {
 
 		$url = 'https://cloud.mail.ru/api/v2/file/publish';
