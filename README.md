@@ -15,6 +15,7 @@
 * publishFile - публикация файла
 * loadFileAhdPublish - загрузка файла в облако и его публикация
 * removeFile_from_cloud - удаление файла
+* renameFile_on_cloud - переименование файла
 
 [Пример использования](example.php)
 
